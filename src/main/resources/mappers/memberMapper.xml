@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="global.sesoc.shop.dao.MemberMapper">
+
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="Member">
+		INSERT INTO
+		MEMBER
+		VALUES
+		(
+		#{userid}
+		,#{userpwd}
+		,#{username}
+		,#{email}
+		,#{phone}
+		)
+	</insert>
+
+	<!-- 회원정보수정 -->
+	<update id="update" parameterType="Member">
+		UPDATE MEMBERS2
+		SET USERPWD = #{userpwd}
+		,USERNAME = #{username}
+		,HOBBY = #{hobby}
+		,GENDER = #{gender}
+		,AGE = #{age}
+		,PHONE = #{phone}
+		,ADDRESS = #{address}
+		,INTRODUCE = #{introduce}
+	</update>
+
+	<!-- 로그인, 아이디 중복확인 -->
+	<select id="loginMember" parameterType="Member"
+		resultType="Member">
+		SELECT USERID
+		,USERPWD
+		,USERNAME
+		,EMAIL
+		,PHONE
+		FROM MEMBER
+		WHERE USERID = #{userid}
+		<if test="userpwd != null">
+		AND USERPWD = #{userpwd}
+		</if>
+	</select>
+
+	<!-- 검색이력, 예약이력 -->
+	<insert id="insertRecord" parameterType="MyRecord">
+		INSERT INTO MYRECORD
+		(
+		RECORDNUM
+		,USERID
+		,SEARCHNM
+		,SVCNM
+		,REGDATE
+		)
+		VALUES
+		(
+		record_seq.nextval
+		,#{userid}
+		,#{searchnm}
+		,#{svcnm}
+		,sysdate
+		)
+	</insert>
+
+	<select id="selectRecord" resultType="MyRecord"
+		parameterType="String">
+		select *
+		from MYRECORD
+		where userid = #{userid}
+		order by recordnum desc
+	</select>
+
+	<!-- 기록삭제 -->
+	<delete id="deleteRecord" parameterType="int">
+		delete from MYRECORD
+		where
+		recordnum = #{recordnum}
+	</delete>
+</mapper>

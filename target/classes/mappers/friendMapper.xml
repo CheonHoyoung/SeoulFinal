@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.shop.dao.FriendMapper">
+
+	<!-- 전체 글 개수 조회 -->
+	<select id="getTotalBoard" resultType="int" parameterType="map">
+	SELECT COUNT(*)
+	FROM
+		MEMBER
+	WHERE <choose>
+		           <when test="searchItem == 'userid'">userid</when>
+		           <when test="searchItem == 'username'">username</when>
+          </choose> 
+          like '%' || #{searchWord} ||'%' 	
+	</select>
+	
+	<select id="selectMember"  resultType="Member" parameterType="Map">
+	select *
+        from MEMBER 
+        where ${searchItem} like '%' || #{searchWord} ||'%' 
+	</select>
+	
+	<insert id="friendInsert" parameterType="Friend">
+		INSERT INTO
+		FRIEND
+		VALUES
+		(
+		#{userid}
+		,#{friend_id}
+		,#{friend_name}
+		,#{friend_mail}
+		,#{friend_phone}
+		)
+	</insert>
+	
+		<select id="selectFriend"  parameterType="String" resultType="Friend">
+		select *
+			from FRIEND 
+		where userid = #{userid}
+		</select>
+	
+	<select id="selectWFriend"  resultType="Friend">
+	select *
+        from FRIEND 
+     where userid = #{userid}
+       and friend_id = #{friend_id}
+	</select>
+	<!-- 친구삭제 -->
+	<delete id="deleteFriend" parameterType="String">
+		delete from FRIEND
+		where
+		friend_id = #{friend_id}
+	</delete>
+	
+	<insert id="requestFriendInsert" parameterType="RequestFriend">
+		INSERT INTO
+		REQUESTFRIEND
+		VALUES
+		(
+		#{senduserid}
+		,#{receiveuserid}
+		)
+	</insert>
+	
+	<!-- 친구 요청삭제 -->
+	<delete id="deleteRequestFriend" parameterType="String">
+		delete from REQUESTFRIEND
+		where receiveuserid = #{receiveuserid}
+		and senduserid = #{senduserid}
+	</delete>
+	
+	
+	<select id="selectRequestFriend" parameterType="RequestFriend" resultType="RequestFriend">
+	select *
+      from REQUESTFRIEND
+     WHERE receiveuserid = #{receiveuserid}   
+     	<if test="senduserid != null">
+		AND senduserid = #{senduserid}
+		</if>
+	</select>
+	
+	<select id="selectAccessUser" resultType="Member" >
+		select distinct *
+		  from messageroom
+	</select>
+</mapper>

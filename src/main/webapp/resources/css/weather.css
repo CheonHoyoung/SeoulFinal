@@ -1,0 +1,140 @@
+@charset "UTF-8";
+
+div.back{
+	margin: 0 auto;
+	width: 900px;
+	height: 840px;
+}
+div.weather_phone{
+	margin: 0 auto;
+	width: 420px;
+	height: 840px;
+	float: left;
+}
+div.air_phone{
+	margin: 0 auto;
+	width: 420px;
+	height: 840px;
+	float: right;
+}
+div.weather_back{
+	margin: 0 auto;
+	width: 370px;
+	height: 620px;
+	background-color: #0088eb;
+	float: left 20px;
+}
+div.air_back{
+	margin: 0 auto;
+	width: 370px;
+	height: 620px;
+	float: right 3px;
+}
+div.air_clean{
+	margin : 0 auto;
+	background-color : #0088eb;
+	width : 100%;
+	height : 100%;
+}
+div.air_soso{
+	margin : 0 auto;
+	background-color : #00e85b;
+	width : 100%;
+	height : 100%;
+}
+div.air_dirty{
+	margin : 0 auto;
+	background-color : #ff8638;
+	width : 100%;
+	height : 100%;
+}
+div.air_worst{
+	margin : 0 auto;
+	background-color : #ff4b3f;
+	width : 100%;
+	height : 100%;
+}
+div.air_error{
+	margin : 0 auto;
+	background-color : #898989;
+	width : 100%;
+	height : 100%;
+}
+div.empty{
+	margin : 0 auto;
+	width: 100%;
+	height: 40px;
+}
+div.address{
+	text-align : center;
+	font-size : 30px;
+	color : white;
+	margin : 0 auto;
+	width: 100%;
+	height: 90px;
+}
+div.image{
+	margin : 0 auto;
+	text-align: center;
+	width: 100%;
+	height: 150px;
+}
+div.air_grade_name{
+	margin : 0 auto;
+	text-align: center;
+	font-size : 20px;
+	color : white;
+	width: 100%;
+	height: 30px;
+}
+div.air_grade{
+	margin : 0 auto;
+	text-align: center;
+	font-size : 50px;
+	color : white;
+	width: 100%;
+	height: 80px;
+}
+div.weather_grade{
+	margin : 0 auto;
+	text-align: center;
+	font-size : 50px;
+	color : white;
+	width: 100%;
+	height: 150px;
+}
+div.weather_info{
+	margin : 0 auto;
+	color : white;
+	width: 100%;
+	height: 150px;
+}
+div.line{
+	width : 100%;
+	height : 30px;
+	text-align: center;
+	background-color : black;
+	color : white;
+	opacity : 0.3;
+}
+div.detail_box{
+	margin : 0 auto;
+	width : 85%;
+	height : 120px;
+}
+div.detail{
+	text-align : center;
+	float : right;
+	color : white;
+	font-size : 12px;
+	height : 100%;
+}
+table.air_data{
+	margin : 0 auto;
+	background-color : black;
+	opacity : 0.3;
+	width : 340px;
+	height : 130px;
+	text-align: left;
+	font-size : 15px;
+}

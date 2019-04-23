@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.shop.dao.ChatMapper">
+
+		<insert id="addMessage" parameterType="Message">
+		INSERT INTO MESSAGE
+		 VALUES(
+		 	msg_seq.nextval
+			,#{message}
+			,#{receiveUserId}
+			,#{sendUserId}
+			,sysdate
+			,#{onoff}
+		)
+	</insert >
+	
+	<select id="selectMessage" parameterType="String" resultType="Message">
+		select *
+		  from MESSAGE
+		 where RECEIVEUSERID=#{userId}
+		 order by MSGDATE desc
+	</select>
+	
+	<!-- 글삭제 -->
+	<delete id="chatOut" parameterType="String">
+		delete from chatlist
+		where userid = #{userId}
+	</delete>
+	
+	<select id="selectOffMessage" parameterType="String" resultType="int" >
+		select COUNT(*)
+		  from MESSAGE
+		 where RECEIVEUSERID=#{userId}
+		   and ONOFF = 1 
+	</select>
+	
+	<!-- 회원정보수정 -->
+	<update id="updateOffMessage" parameterType="String">
+		UPDATE MESSAGE
+		SET ONOFF = 0 
+		where RECEIVEUSERID=#{userId}
+	</update>
+	
+	<!-- 글삭제 -->
+	<delete id="deleteMessage" parameterType="int">
+		delete from MESSAGE
+		where
+		msgnum = #{msgnum}
+	</delete>
+	
+	<insert id="addUser" parameterType="String">
+		INSERT INTO messageroom
+		 VALUES(
+			#{userId}
+			,#{id}
+		)
+	</insert >
+	
+	<!-- 글삭제 -->
+	<delete id="deleteUser" parameterType="MessageRoom">
+		delete from messageroom
+		where
+		id = #{id}
+	</delete>
+	
+</mapper>

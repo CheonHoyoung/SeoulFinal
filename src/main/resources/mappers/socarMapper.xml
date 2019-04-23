@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.shop.dao.CarMapper">
+	<!-- 소카 객체인설트 앞으로 안씀 -->
+	<insert id="insert" parameterType="Socar">
+		INSERT INTO SOCAR
+		(
+			LA 
+			,LO 
+			,POSITN_CD
+			,ELCTYVHCLE_AT
+			,ADRES
+			,POSITN_NM
+		) VALUES(
+			#{la}
+			,#{lo}
+			,#{positn_cd}
+			,#{elctyvhcle_at}
+			,#{adres}
+			,#{positn_nm}
+		)
+	</insert>
+	
+	<!-- 소카 셀렉트 -->
+	<select id="selectAll" parameterType="map" resultType="Socar">
+		SELECT *
+		  FROM SOCAR
+		    where ADRES like '%' || #{keywordGu} ||'%'
+		  <if test="keywordNm != null">
+		    and POSITN_NM like '%' || #{keywordNm} ||'%'
+		  </if>
+	</select>
+	
+	<!-- 문화 객체인설트 앞으로 안씀 -->
+	<insert id="insertCulture" parameterType="Culture">
+		INSERT INTO CULTURE
+			(
+				CULTURENUM
+				,SVCID 
+				,SVCNM 
+				,MINCLASSNM
+				,PLACENM
+				,SVCURL
+				,NOTICE
+				,X
+				,Y
+				,SVCOPNBGNDT
+				,IMG_PATH
+			) VALUES(
+				culture_seq.nextval
+				,#{svcid}
+				,#{svcnm}
+				,#{minclassnm}
+				,#{placenm}
+				,#{svcurl}
+				,#{notice,jdbcType=CLOB }
+				,#{x}
+				,#{y}
+				,TO_DATE(#{svcopnbgndt} , 'yyyy-mm-dd')
+				,#{img_path}
+			)
+	</insert>
+	
+	
+	<!-- 전체 글 개수 조회 -->
+	<select id="getTotalBoard" resultType="int" parameterType="map">
+	SELECT COUNT(*)
+	FROM
+		CULTURE
+	WHERE <choose>
+		           <when test="searchItem == 'svcnm'">svcnm</when>
+		           <when test="searchItem == 'minclassnm'">minclassnm</when>
+		           <when test="searchItem == 'placenm'">placenm</when>
+          </choose> 
+          like '%' || #{searchWord} ||'%' 	
+	</select>
+	
+	<select id="selectCulture"  resultType="Culture" parameterType="Map">
+	select CULTURENUM
+		  ,SVCID
+		  ,SVCNM
+		  ,MINCLASSNM
+		  ,PLACENM
+		  ,SVCURL
+		  ,NOTICE
+		  ,X
+		  ,Y
+		  ,to_char(SVCOPNBGNDT, 'YYYY-MM-DD') as SVCOPNBGNDT
+		  ,IMG_PATH
+        from CULTURE 
+        where ${searchItem} like '%' || #{searchWord} ||'%' 
+        order by svcopnbgndt desc
+	</select>
+	
+	<resultMap type="Culture" id="detailC">
+		<result property="notice" column="NOTICE" jdbcType="CLOB" javaType="java.lang.String" />
+	</resultMap>
+	
+	<select id="selectOne"  resultType="Culture" parameterType="int" resultMap="detailC">
+	select *
+      from CULTURE 
+     where CULTURENUM = #{culturenum} 
+	</select>
+	
+	
+</mapper>

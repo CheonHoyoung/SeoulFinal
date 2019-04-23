@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.shop.dao.BoardMapper">
+
+
+ <select id="select" parameterType="map" resultType="Board">
+     select
+        board_num
+        , userid
+        , b_title
+        , b_content
+        , hitcount
+        , to_char(b_regdate,'YYYY-MM-DD') as b_regdate
+        , b_originalfile
+        , b_savedfile
+     from
+        board
+     where
+        ${searchItem} like '%'|| #{searchWord} || '%'
+     order by 
+        board_num desc
+  </select>
+     
+    <select id="selectOne" parameterType="int" resultType="Board">
+       select
+          board_num
+          , userid
+          , b_title
+          , b_content
+          , to_char(b_regdate, 'YYYY-MM-DD') as regdate
+          , hitcount
+          , b_originalfile
+          , b_savedfile
+       from board
+       where board_num = #{board_num}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+       delete from board
+       where board_num = #{board_num}
+    </delete>
+    
+    <!-- <update id="update" parameterType="int">
+    
+    </update> -->
+ 
+    <insert id="insert" parameterType="Board" >
+    
+       insert into board
+       (
+          board_num
+          , userid
+          , b_title
+          , b_content
+          <if test="b_originalfile !=null and b_savedfile != null">
+          , b_originalfile
+          , b_savedfile
+          </if>
+       
+       )
+       values
+       (
+          board_seq.nextval
+          , #{userid}
+          , #{b_title}
+          , #{b_content}
+           <if test="b_originalfile !=null and b_savedfile != null">
+          , #{b_originalfile}
+          , #{b_savedfile}
+          </if>
+          
+       )
+       <selectKey keyProperty="board_num" order="AFTER" resultType="int">
+       select board_seq.currval
+         from dual
+       </selectKey>
+    </insert>
+    
+    <update id="updateHitcount" parameterType="int">
+       update board
+       set
+          hitcount = hitcount + 1
+       where
+          board_num = #{board_num}
+    </update>
+    
+    <update id="update" parameterType="Board">
+      update board
+       set
+           b_title=#{b_title}
+          , b_content=#{b_content}     
+          <if test="b_originalfile != null and b_savedfile != null">
+          , b_originalfile=#{b_originalfile}
+          , b_savedfile=#{b_savedfile}
+		  </if>      
+        where 
+           board_num=#{board_num}   
+    
+    </update>
+    
+   <select id="getTotalBoard" resultType="int" parameterType="map">
+       select count(*) 
+       from board
+        where 
+             <choose>
+           <when test="searchItem == 'userid'">userid</when>
+           <when test="searchItem == 'b_title'">b_title</when>
+           <when test="searchItem == 'b_content'">b_content</when>
+             </choose> 
+              like '%' || #{searchWord} ||'%' 
+    </select>
+    
+    <insert id="replyInsert" parameterType="Reply">
+    insert into reply(
+    reply_num,
+    board_num,
+    userid,
+    b_replytext
+    )value(
+    reply2_seq.nextval
+    ,#{board_num}
+    ,#{userid}
+    ,#{b_replytext}
+    )
+    </insert>
+    
+
+</mapper>
